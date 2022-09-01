@@ -4,7 +4,12 @@ using UnityEngine;
 public class Alarm : MonoBehaviour
 {
     [SerializeField] private AudioSource _alarmSound;
+    [SerializeField] private float _volumeStep;
+
     private Coroutine _currentCoroutine;
+    private float _currentVolume = 0f;
+    private float _minVolume = 0f;
+    private float _maxVolume = 1f;
 
     private void Start()
     {
@@ -15,7 +20,6 @@ public class Alarm : MonoBehaviour
     {
         if (collision.TryGetComponent<Player>(out Player player))
         {
-            _alarmSound.volume = 0.1f;
             _alarmSound.Play();
 
             if(_currentCoroutine != null)
@@ -43,9 +47,10 @@ public class Alarm : MonoBehaviour
     {
         var _waitingTime = new WaitForSeconds(1f);
 
-        while(_alarmSound.volume < 1)
+        while(_currentVolume <= _maxVolume)
         {
-            _alarmSound.volume += 0.2f;
+            _alarmSound.volume = Mathf.MoveTowards(_alarmSound.volume, _maxVolume, _volumeStep);
+            _currentVolume = _alarmSound.volume;
             yield return _waitingTime;
         }
     }
@@ -54,9 +59,10 @@ public class Alarm : MonoBehaviour
     {
         var _waitingTime = new WaitForSeconds(1f);
 
-        while (_alarmSound.volume > 0)
+        while(_currentVolume > _minVolume)
         {
-            _alarmSound.volume -= 0.2f;
+            _alarmSound.volume = Mathf.MoveTowards(_alarmSound.volume, _minVolume, _volumeStep);
+            _currentVolume = _alarmSound.volume;
             yield return _waitingTime;
         }
 
