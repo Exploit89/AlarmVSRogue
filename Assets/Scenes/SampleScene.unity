@@ -671,6 +671,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _alarmSound: {fileID: 580151075}
+  _volumeStep: 0.2
 --- !u!1 &2118897259
 GameObject:
   m_ObjectHideFlags: 0
