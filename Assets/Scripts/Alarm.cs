@@ -45,7 +45,7 @@ public class Alarm : MonoBehaviour
 
         while(_alarmSound.volume < 1)
         {
-            _alarmSound.volume += 0.1f;
+            _alarmSound.volume += 0.2f;
             yield return _waitingTime;
         }
     }
@@ -56,7 +56,7 @@ public class Alarm : MonoBehaviour
 
         while (_alarmSound.volume > 0)
         {
-            _alarmSound.volume -= 0.1f;
+            _alarmSound.volume -= 0.2f;
             yield return _waitingTime;
         }
 
