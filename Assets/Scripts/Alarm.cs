@@ -9,34 +9,21 @@ public class Alarm : MonoBehaviour
     [SerializeField] private float _volumeStep;
 
     private Coroutine _currentCoroutine;
-    private float _minVolume = 0f;
-    private float _maxVolume = 1f;
+
 
     private void Start()
     {
         _alarmSound = GetComponent<AudioSource>();
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    public void VolumeChange(float targetVolume)
     {
-        if (collision.TryGetComponent<Player>(out Player player))
-        {
-            _alarmSound.Play();
+        _alarmSound.Play();
 
-            if(_currentCoroutine != null)
-                StopCoroutine(_currentCoroutine);
-
-            _currentCoroutine = StartCoroutine(ChangeSoundVolume(_maxVolume));
-        }
-    }
-
-    private void OnTriggerExit2D(Collider2D collision)
-    {
-        if(collision.TryGetComponent<Player>(out Player player))
-        {
+        if (_currentCoroutine != null)
             StopCoroutine(_currentCoroutine);
-            StartCoroutine(ChangeSoundVolume(_minVolume));
-        }
+
+        _currentCoroutine = StartCoroutine(ChangeSoundVolume(targetVolume));
     }
 
     private IEnumerator ChangeSoundVolume(float volume)
