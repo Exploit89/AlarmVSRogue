@@ -8,6 +8,7 @@ public class Alarm : MonoBehaviour
 {
     [SerializeField] private AudioSource _alarmSound;
     [SerializeField] private float _volumeStep;
+    [SerializeField] private EntryExitTrigger _entryExitTrigger;
 
 
     private float _minVolume = 0f;
@@ -19,7 +20,12 @@ public class Alarm : MonoBehaviour
         _alarmSound = GetComponent<AudioSource>();
     }
 
-    public void VolumeChange(float targetVolume)
+    private void OnEnable()
+    {
+        _entryExitTrigger.DoorTriggerActivated += VolumeChange(_maxVolume);
+    }
+
+    private void VolumeChange(float targetVolume)
     {
         _alarmSound.Play();
 

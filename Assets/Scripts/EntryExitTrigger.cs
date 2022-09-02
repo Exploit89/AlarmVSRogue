@@ -6,16 +6,15 @@ using UnityEngine.Events;
 public class EntryExitTrigger : MonoBehaviour
 {
     [SerializeField] private Alarm _alarm;
-    [SerializeField] private UnityEvent _doorTriggerActivated;
 
-    private bool _isPlayerInside;
+    [SerializeField] public UnityEvent DoorTriggerActivated { get; private set; }
+    [SerializeField] public UnityEvent DoorTriggerDeactivated { get; private set; }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.TryGetComponent<Player>(out Player player))
         {
-            _isPlayerInside = true;
-            _doorTriggerActivated?.Invoke();
+            DoorTriggerActivated?.Invoke();
         }
     }
 
@@ -23,8 +22,7 @@ public class EntryExitTrigger : MonoBehaviour
     {
         if (collision.TryGetComponent<Player>(out Player player))
         {
-            _isPlayerInside = false;
-            _doorTriggerActivated?.Invoke();
+            DoorTriggerDeactivated?.Invoke();
         }
     }
 }
