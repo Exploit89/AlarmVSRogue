@@ -1,23 +1,30 @@
 using UnityEngine;
+using UnityEngine.Events;
 
 [RequireComponent(typeof(Alarm))]
 
 public class EntryExitTrigger : MonoBehaviour
 {
     [SerializeField] private Alarm _alarm;
+    [SerializeField] private UnityEvent _doorTriggerActivated;
 
-    private float _minVolume = 0f;
-    private float _maxVolume = 1f;
+    private bool _isPlayerInside;
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.TryGetComponent<Player>(out Player player))
-            _alarm.VolumeChange(_maxVolume);
+        {
+            _isPlayerInside = true;
+            _doorTriggerActivated?.Invoke();
+        }
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
         if (collision.TryGetComponent<Player>(out Player player))
-            _alarm.VolumeChange(_minVolume);
+        {
+            _isPlayerInside = false;
+            _doorTriggerActivated?.Invoke();
+        }
     }
 }

@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Events;
 
 [RequireComponent(typeof(AudioSource))]
 
@@ -8,6 +9,9 @@ public class Alarm : MonoBehaviour
     [SerializeField] private AudioSource _alarmSound;
     [SerializeField] private float _volumeStep;
 
+
+    private float _minVolume = 0f;
+    private float _maxVolume = 1f;
     private Coroutine _currentCoroutine;
 
     private void Start()
