@@ -10,7 +10,6 @@ public class Alarm : MonoBehaviour
 
     private Coroutine _currentCoroutine;
 
-
     private void Start()
     {
         _alarmSound = GetComponent<AudioSource>();
