@@ -1,6 +1,5 @@
 using System.Collections;
 using UnityEngine;
-using UnityEngine.Events;
 
 [RequireComponent(typeof(AudioSource))]
 
@@ -8,11 +7,10 @@ public class Alarm : MonoBehaviour
 {
     [SerializeField] private AudioSource _alarmSound;
     [SerializeField] private float _volumeStep;
-    [SerializeField] private EntryExitTrigger _entryExitTrigger;
 
-
-    private float _minVolume = 0f;
+    private EntryExitTrigger _entryExitTrigger;
     private float _maxVolume = 1f;
+    private float _minVolume = 0f;
     private Coroutine _currentCoroutine;
 
     private void Start()
@@ -20,9 +18,19 @@ public class Alarm : MonoBehaviour
         _alarmSound = GetComponent<AudioSource>();
     }
 
-    private void OnEnable()
+    void OnEnable()
     {
         _entryExitTrigger.DoorTriggerActivated += VolumeChange(_maxVolume);
+    }
+
+    void OnEnable()
+    {
+        EntryExitTrigger.DoorTriggerActivated += VolumeChange(_maxVolume);
+    }
+
+    void OnDisable()
+    {
+        
     }
 
     private void VolumeChange(float targetVolume)
