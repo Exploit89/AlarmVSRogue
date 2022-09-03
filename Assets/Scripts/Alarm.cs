@@ -7,8 +7,8 @@ public class Alarm : MonoBehaviour
 {
     [SerializeField] private AudioSource _alarmSound;
     [SerializeField] private float _volumeStep;
+    [SerializeField] private EntryExitTrigger _trigger;
 
-    private EntryExitTrigger _entryExitTrigger;
     private float _maxVolume = 1f;
     private float _minVolume = 0f;
     private Coroutine _currentCoroutine;
@@ -16,31 +16,21 @@ public class Alarm : MonoBehaviour
     private void Start()
     {
         _alarmSound = GetComponent<AudioSource>();
+        _trigger.DoorTriggerActivated += VolumeChange;
+        _trigger.DoorTriggerDeactivated.AddListener(VolumeChange);
     }
 
-    void OnEnable()
-    {
-        _entryExitTrigger.DoorTriggerActivated += VolumeChange(_maxVolume);
-    }
-
-    void OnEnable()
-    {
-        EntryExitTrigger.DoorTriggerActivated += VolumeChange(_maxVolume);
-    }
-
-    void OnDisable()
-    {
-        
-    }
-
-    private void VolumeChange(float targetVolume)
+    public void VolumeChange()
     {
         _alarmSound.Play();
 
         if (_currentCoroutine != null)
             StopCoroutine(_currentCoroutine);
 
-        _currentCoroutine = StartCoroutine(ChangeSoundVolume(targetVolume));
+        if(_trigger.IsPlayerInside)
+            _currentCoroutine = StartCoroutine(ChangeSoundVolume(_maxVolume));
+        else
+            _currentCoroutine = StartCoroutine(ChangeSoundVolume(_minVolume));
     }
 
     private IEnumerator ChangeSoundVolume(float volume)
